@@ -53,13 +53,15 @@
 </head>
 <body class="p-4 md:p-8">
 
-<div id="registerDiv" class="card p-6 mb-8">
-    <h2 class="text-xl font-bold mb-4 text-[#3E1F47]">سجلي بياناتك أولاً</h2>
-    <form id="registerForm" action="GOOGLE_FORM_URL" method="POST" target="hidden_iframe">
-        <input type="text" id="userName" placeholder="اسمك" class="border rounded p-2 w-full mb-4" required>
-        <input type="email" id="userEmail" placeholder="إيميلك" class="border rounded p-2 w-full mb-4" required>
-        <button type="submit" class="bg-[#C5A059] text-white px-4 py-2 rounded">سجل</button>
-    </form>
+<div id="registerDiv" class="fixed inset-0 flex items-center justify-center bg-black/30 z-50">
+    <div class="card p-8 max-w-md w-full bg-white rounded-2xl shadow-xl text-center">
+        <h2 class="text-2xl font-bold mb-6 text-[#3E1F47]">سجلي بياناتك أولاً</h2>
+        <form id="registerForm" action="GOOGLE_FORM_URL" method="POST" target="hidden_iframe" class="space-y-4">
+            <input type="text" id="userName" placeholder="اسمك" class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#C5A059]" required>
+            <input type="email" id="userEmail" placeholder="إيميلك" class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#C5A059]" required>
+            <button type="submit" class="bg-[#C5A059] text-white px-6 py-3 rounded-lg font-semibold w-full hover:bg-[#b5923d] transition-colors">سجل</button>
+        </form>
+    </div>
     <iframe name="hidden_iframe" style="display:none;"></iframe>
 </div>
 
@@ -266,3 +268,4 @@
 
 </body>
 </html>
+
