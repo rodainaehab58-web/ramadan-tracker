@@ -107,16 +107,16 @@
    ========================================= */
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZ-uf1cubo8CXUJpVmYZtH-5qQaPmeTM2454cs86JNNogsl1cruFIqTHCDlZk8EmnV/exec";
 
-/*const categories = [
+const categories = [
     {title:"الصلوات المفروضة", icon:"🕌", tasks:["الفجر","الظهر","العصر","المغرب","العشاء"]},
     {title:"السنن الرواتب", icon:"✨", tasks:["سنة الفجر","سنة الظهر","سنة المغرب","سنة العشاء"]},
     {title:"الأذكار والورد", icon:"📖", tasks:["أذكار الصباح","أذكار المساء","الورد القرآني","الاستغفار","الصلاة على النبي"]},
     {title:"قيام الليل", icon:"🌙", tasks:["صلاة التراويح","صلاة الوتر"]}
-];*/
+];
 
-/*let currentDay = 1;
+let currentDay = 1;
 let userData = JSON.parse(localStorage.getItem('ramadan_tracker')) || {};
-let quranData = JSON.parse(localStorage.getItem('quranParts')) || {};*/
+let quranData = JSON.parse(localStorage.getItem('quranParts')) || {};
 
 // دالة إرسال البيانات لجوجل شيت
 async function syncToGoogleSheet() {
@@ -124,19 +124,19 @@ async function syncToGoogleSheet() {
     if (!user || GOOGLE_SCRIPT_URL.includes("رابط_السكربت")) return;
 
     // حساب النسبة المئوية الحالية لإرسالها
-  /*  const totalTasks = categories.reduce((acc, cat) => acc + cat.tasks.length, 0);
+    const totalTasks = categories.reduce((acc, cat) => acc + cat.tasks.length, 0);
     let completedCount = 0;
     categories.forEach((cat, catIdx) => cat.tasks.forEach((_, taskIdx) => {
         if (userData[`day-${currentDay}-cat-${catIdx}-task-${taskIdx}`]) completedCount++;
     }));
-    const progress = Math.round((completedCount / totalTasks) * 100) || 0;*/
+    const progress = Math.round((completedCount / totalTasks) * 100) || 0;
 
     const payload = {
         name: user.name,
         email: user.email,
         day: currentDay,
-      //  progress: progress,
-      //  quran_total: Object.values(quranData).filter(v => v).length
+        progress: progress,
+        quran_total: Object.values(quranData).filter(v => v).length
     };
 
     try {
@@ -198,11 +198,13 @@ function renderTasks(){
     updateProgress();
 }
 
-window.toggleTask = function(taskId){
+/*window.toggleTask = function(taskId){
     userData[taskId] = !userData[taskId];
     localStorage.setItem('ramadan_tracker', JSON.stringify(userData));
     renderTasks();
-    syncToGoogleSheet(); // مزامنة بعد كل ضغطة
+    syncToGoogleSheet(); 
+   */
+    // مزامنة بعد كل ضغطة
 }
 
 function updateProgress(){
@@ -255,6 +257,7 @@ updateQuranProgress();
 
 </body>
 </html>
+
 
 
 
