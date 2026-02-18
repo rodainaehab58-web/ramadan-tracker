@@ -47,8 +47,8 @@
     <div class="card p-8 max-w-md w-full bg-white rounded-2xl shadow-xl text-center">
         <h2 class="text-2xl font-bold mb-6 text-[#3E1F47]">سجل بياناتك أولاً</h2>
         <form id="registerForm" class="space-y-4">
-            <input type="text" id="userName" placeholder="اسمك" class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#C5A059]" required>
-            <input type="email" id="userEmail" placeholder="إيميلك" class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#C5A059]" required>
+            <input type="text" id="userName" placeholder="الاسم" class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#C5A059]" required>
+            <input type="email" id="userEmail" placeholder="الايميل" class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#C5A059]" required>
             <button type="submit" class="bg-[#C5A059] text-white px-6 py-3 rounded-lg font-semibold w-full hover:bg-[#b5923d] transition-colors">سجل وابدأ</button>
         </form>
     </div>
@@ -117,7 +117,7 @@ const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZ-uf1cubo8C
 
 const categories = [
     {title:"الصلوات المفروضة", icon:"🕌", tasks:["الفجر","الظهر","العصر","المغرب","العشاء"]},
-    {title:"السنن الرواتب", icon:"✨", tasks:["(2 بعد) سنة الفجر (2 قبل)","سنة الظهر (4 قبل / 2 بعد)","سنة المغرب (2 بعد)","سنة العشاء"]},
+    {title:"السنن الرواتب", icon:"✨", tasks:["(2 بعد) سنة الفجر (2 قبل)","سنة الظهر (4 قبل - 2 بعد)","سنة المغرب (2 بعد)","سنة العشاء"]},
     {title:"الأذكار والورد", icon:"📖", tasks:["أذكار الصباح","أذكار المساء","الورد القرآني","الاستغفار","الصلاة على النبي"]},
     {title:"قيام الليل", icon:"🌙", tasks:["صلاة التراويح","صلاة الوتر"]}
 ];
@@ -263,6 +263,7 @@ updateQuranProgress();
 
 </body>
 </html>
+
 
 
 
