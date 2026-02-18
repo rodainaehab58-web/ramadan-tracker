@@ -53,10 +53,11 @@
 </head>
 <body class="p-4 md:p-8">
 
+<!-- ======= تسجيل البيانات ======= -->
 <div id="registerDiv" class="fixed inset-0 flex items-center justify-center bg-black/30 z-50">
     <div class="card p-8 max-w-md w-full bg-white rounded-2xl shadow-xl text-center">
         <h2 class="text-2xl font-bold mb-6 text-[#3E1F47]">سجلي بياناتك أولاً</h2>
-        <form id="registerForm" action="GOOGLE_FORM_URL" method="POST" target="hidden_iframe" class="space-y-4">
+        <form id="registerForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdPcGOSj8kv1MREEXHyyd_292rtZaYGi1J0OBC63gsN5C9DcQ/formResponse" method="POST" target="hidden_iframe" class="space-y-4">
             <input type="text" id="userName" placeholder="اسمك" class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#C5A059]" required>
             <input type="email" id="userEmail" placeholder="إيميلك" class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#C5A059]" required>
             <button type="submit" class="bg-[#C5A059] text-white px-6 py-3 rounded-lg font-semibold w-full hover:bg-[#b5923d] transition-colors">سجل</button>
@@ -65,8 +66,8 @@
     <iframe name="hidden_iframe" style="display:none;"></iframe>
 </div>
 
+<!-- ======= لوحة المتابعة ======= -->
 <div id="trackerDiv" style="display:none;">
-
     <div class="max-w-4xl mx-auto">
         <!-- Header -->
         <header class="ramadan-theme text-white p-6 rounded-2xl mb-8 shadow-lg text-center relative overflow-hidden">
@@ -118,15 +119,15 @@
         <footer class="mt-12 text-center text-gray-500 italic">
             <p id="dailyQuote">رمضان فرصة للتغيير، ابدأ يومك بنية خالصة لله.</p>
         </footer>
-
     </div>
-
 </div>
 
+<!-- ======= JavaScript ======= -->
 <script>
-    // Check registration
+    // ==== تسجيل البيانات ====
     const registerDiv = document.getElementById('registerDiv');
     const trackerDiv = document.getElementById('trackerDiv');
+
     if(localStorage.getItem('ramadan_user')){
         registerDiv.style.display = 'none';
         trackerDiv.style.display = 'block';
@@ -136,32 +137,36 @@
         e.preventDefault();
         const userName = document.getElementById('userName').value;
         const userEmail = document.getElementById('userEmail').value;
+
         localStorage.setItem('ramadan_user', JSON.stringify({name:userName,email:userEmail}));
 
-        // Send to Google Form
+        // إرسال البيانات للفورم
         const formURL = this.action;
         const formData = new FormData();
-        formData.append('entry.1234567890', userName);
-        formData.append('entry.9876543210', userEmail);
+        formData.append('entry.536000406', userName); // اسم المستخدم
+        formData.append('entry.650006323', userEmail); // البريد الإلكتروني
 
-        fetch(formURL,{method:'POST',mode:'no-cors',body:formData})
-        .then(()=>{registerDiv.style.display='none'; trackerDiv.style.display='block';});
+        fetch(formURL, { method:'POST', mode:'no-cors', body:formData })
+        .then(()=>{
+            registerDiv.style.display='none';
+            trackerDiv.style.display='block';
+        });
     });
 
-    /* ==== Daily Tasks ==== */
-    const categories=[
+    // ==== المهام اليومية ====
+    const categories = [
         {title:"الصلوات المفروضة",icon:"🕌",tasks:["الفجر","الظهر","العصر","المغرب","العشاء"]},
         {title:"السنن الرواتب",icon:"✨",tasks:["سنة الفجر (2 قبل)","سنة الظهر (4 قبل و 2 بعد)","سنة المغرب (2 بعد)","سنة العشاء (2 بعد)"]},
         {title:"الأذكار والورد",icon:"📖",tasks:["أذكار الصباح","أذكار المساء","الورد القرآني اليومي","الاستغفار (100 مرة)","الصلاة على النبي (100 مرة)"]},
         {title:"قيام الليل",icon:"🌙",tasks:["صلاة التراويح","صلاة الوتر"]}
     ];
 
-    let currentDay=1;
-    let userData=JSON.parse(localStorage.getItem('ramadan_tracker'))||{};
-    const daySelector=document.getElementById('daySelector');
-    const tasksContainer=document.getElementById('tasksContainer');
-    const progressBar=document.getElementById('progressBar');
-    const progressPercent=document.getElementById('progressPercent');
+    let currentDay = 1;
+    let userData = JSON.parse(localStorage.getItem('ramadan_tracker')) || {};
+    const daySelector = document.getElementById('daySelector');
+    const tasksContainer = document.getElementById('tasksContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressPercent = document.getElementById('progressPercent');
 
     function initDays(){
         for(let i=1;i<=30;i++){
@@ -228,7 +233,7 @@
     initDays();
     renderTasks();
 
-    /* ==== Quran Parts Tracker ==== */
+    // ==== متابعة أجزاء القرآن ====
     const quranPartsContainer=document.getElementById('quranPartsContainer');
     const quranProgressPercent=document.getElementById('quranProgressPercent');
     let quranData=JSON.parse(localStorage.getItem('quranParts'))||{};
@@ -268,4 +273,3 @@
 
 </body>
 </html>
-
