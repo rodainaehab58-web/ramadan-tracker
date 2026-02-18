@@ -17,8 +17,8 @@
     <style>
         body {
             font-family: 'Tajawal', sans-serif;
-            background-color: #DBCFBB; /* Beige */
-            color: #3E1F47; /* Plum */
+            background-color: #DBCFBB;
+            color: #3E1F47;
         }
 
         .quran-font {
@@ -36,13 +36,13 @@
             width: 24px;
             height: 24px;
             border-radius: 6px;
-            border: 2px solid #C5A059; /* Gold */
+            border: 2px solid #C5A059;
             cursor: pointer;
             transition: all 0.2s;
         }
 
         .checkbox-custom.checked {
-            background-color: #C5A059; /* Gold */
+            background-color: #C5A059;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z'/%3E%3C/svg%3E");
         }
 
@@ -53,22 +53,22 @@
 </head>
 <body class="p-4 md:p-8">
 
-<!-- ======= تسجيل البيانات ======= -->
+<!-- ====== تسجيل المستخدم ====== -->
 <div id="registerDiv" class="fixed inset-0 flex items-center justify-center bg-black/30 z-50">
     <div class="card p-8 max-w-md w-full bg-white rounded-2xl shadow-xl text-center">
         <h2 class="text-2xl font-bold mb-6 text-[#3E1F47]">سجلي بياناتك أولاً</h2>
-        <form id="registerForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdPcGOSj8kv1MREEXHyyd_292rtZaYGi1J0OBC63gsN5C9DcQ/formResponse" method="POST" target="hidden_iframe" class="space-y-4">
+        <form id="registerForm" class="space-y-4">
             <input type="text" id="userName" placeholder="اسمك" class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#C5A059]" required>
             <input type="email" id="userEmail" placeholder="إيميلك" class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#C5A059]" required>
             <button type="submit" class="bg-[#C5A059] text-white px-6 py-3 rounded-lg font-semibold w-full hover:bg-[#b5923d] transition-colors">سجل</button>
         </form>
     </div>
-    <iframe name="hidden_iframe" style="display:none;"></iframe>
 </div>
 
-<!-- ======= لوحة المتابعة ======= -->
+<!-- ====== المتابعة بعد التسجيل ====== -->
 <div id="trackerDiv" style="display:none;">
-    <div class="max-w-4xl mx-auto">
+
+  <div class="max-w-4xl mx-auto">
         <!-- Header -->
         <header class="ramadan-theme text-white p-6 rounded-2xl mb-8 shadow-lg text-center relative overflow-hidden">
             <div class="relative z-10">
@@ -77,9 +77,6 @@
                 </div>
                 <h1 class="text-3xl md:text-4xl font-bold mb-2">مُتابع العبادات الرمضاني 🌙</h1>
                 <p class="text-[#D4A5A5] opacity-90">"اللهم أعنا على ذكرك وشكرك وحسن عبادتك"</p>
-            </div>
-            <div class="absolute top-0 left-0 opacity-10">
-                <svg width="150" height="150" viewBox="0 0 100 100"><path fill="white" d="M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z"/></svg>
             </div>
         </header>
 
@@ -119,156 +116,156 @@
         <footer class="mt-12 text-center text-gray-500 italic">
             <p id="dailyQuote">رمضان فرصة للتغيير، ابدأ يومك بنية خالصة لله.</p>
         </footer>
+
     </div>
+
 </div>
 
-<!-- ======= JavaScript ======= -->
 <script>
-    // ==== تسجيل البيانات ====
-    const registerDiv = document.getElementById('registerDiv');
-    const trackerDiv = document.getElementById('trackerDiv');
+/* ==== تسجيل المستخدم وارسال البيانات لجوجل فورم ==== */
+const registerDiv = document.getElementById('registerDiv');
+const trackerDiv = document.getElementById('trackerDiv');
 
-    if(localStorage.getItem('ramadan_user')){
-        registerDiv.style.display = 'none';
-        trackerDiv.style.display = 'block';
-    }
+if(localStorage.getItem('ramadan_user')){
+    registerDiv.style.display='none';
+    trackerDiv.style.display='block';
+}
 
-    document.getElementById('registerForm').addEventListener('submit', function(e){
-        e.preventDefault();
-        const userName = document.getElementById('userName').value;
-        const userEmail = document.getElementById('userEmail').value;
+document.getElementById('registerForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const userName = document.getElementById('userName').value;
+    const userEmail = document.getElementById('userEmail').value;
 
-        localStorage.setItem('ramadan_user', JSON.stringify({name:userName,email:userEmail}));
+    localStorage.setItem('ramadan_user', JSON.stringify({name:userName,email:userEmail}));
 
-        // إرسال البيانات للفورم
-        const formURL = this.action;
-        const formData = new FormData();
-        formData.append('entry.536000406', userName); // اسم المستخدم
-        formData.append('entry.650006323', userEmail); // البريد الإلكتروني
+    const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSdPcGOSj8kv1MREEXHyyd_292rtZaYGi1J0OBC63gsN5C9DcQ/formResponse";
+    const formData = new FormData();
+    formData.append('entry.536000406', userName); // الاسم
+    formData.append('entry.650006323', userEmail); // الإيميل
 
-        fetch(formURL, { method:'POST', mode:'no-cors', body:formData })
-        .then(()=>{
-            registerDiv.style.display='none';
-            trackerDiv.style.display='block';
-        });
+    fetch(formURL, {method:'POST',mode:'no-cors',body:formData})
+    .then(() => {
+        registerDiv.style.display='none';
+        trackerDiv.style.display='block';
     });
+});
 
-    // ==== المهام اليومية ====
-    const categories = [
-        {title:"الصلوات المفروضة",icon:"🕌",tasks:["الفجر","الظهر","العصر","المغرب","العشاء"]},
-        {title:"السنن الرواتب",icon:"✨",tasks:["سنة الفجر (2 قبل)","سنة الظهر (4 قبل و 2 بعد)","سنة المغرب (2 بعد)","سنة العشاء (2 بعد)"]},
-        {title:"الأذكار والورد",icon:"📖",tasks:["أذكار الصباح","أذكار المساء","الورد القرآني اليومي","الاستغفار (100 مرة)","الصلاة على النبي (100 مرة)"]},
-        {title:"قيام الليل",icon:"🌙",tasks:["صلاة التراويح","صلاة الوتر"]}
-    ];
+/* ==== إعداد الأيام والمهام اليومية ==== */
+const categories=[
+    {title:"الصلوات المفروضة",icon:"🕌",tasks:["الفجر","الظهر","العصر","المغرب","العشاء"]},
+    {title:"السنن الرواتب",icon:"✨",tasks:["سنة الفجر (2 قبل)","سنة الظهر (4 قبل و 2 بعد)","سنة المغرب (2 بعد)","سنة العشاء (2 بعد)"]},
+    {title:"الأذكار والورد",icon:"📖",tasks:["أذكار الصباح","أذكار المساء","الورد القرآني اليومي","الاستغفار (100 مرة)","الصلاة على النبي (100 مرة)"]},
+    {title:"قيام الليل",icon:"🌙",tasks:["صلاة التراويح","صلاة الوتر"]}
+];
 
-    let currentDay = 1;
-    let userData = JSON.parse(localStorage.getItem('ramadan_tracker')) || {};
-    const daySelector = document.getElementById('daySelector');
-    const tasksContainer = document.getElementById('tasksContainer');
-    const progressBar = document.getElementById('progressBar');
-    const progressPercent = document.getElementById('progressPercent');
+let currentDay=1;
+let userData=JSON.parse(localStorage.getItem('ramadan_tracker'))||{};
+const daySelector=document.getElementById('daySelector');
+const tasksContainer=document.getElementById('tasksContainer');
+const progressBar=document.getElementById('progressBar');
+const progressPercent=document.getElementById('progressPercent');
 
-    function initDays(){
-        for(let i=1;i<=30;i++){
-            const opt=document.createElement('option');
-            opt.value=i; opt.innerText=`اليوم ${i}`;
-            daySelector.appendChild(opt);
-        }
-    }
-
-    function renderTasks(){
-        tasksContainer.innerHTML='';
-        categories.forEach((cat,catIdx)=>{
-            const section=document.createElement('div');
-            section.className='card p-6';
-            section.innerHTML=`<h2 class="text-xl font-bold text-[#3E1F47] mb-4 flex items-center gap-2">
-            <span>${cat.icon}</span> ${cat.title}</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            ${cat.tasks.map((task,taskIdx)=>{
-                const taskId=`day-${currentDay}-cat-${catIdx}-task-${taskIdx}`;
-                const isChecked=userData[taskId]||false;
-                return `<div class="flex items-center gap-3 p-3 rounded-lg hover:bg-[#D4A5A5]/20 transition-colors border border-transparent hover:border-[#C5A059]/40 cursor-pointer" onclick="toggleTask('${taskId}')">
-                    <div id="check-${taskId}" class="checkbox-custom ${isChecked?'checked':''}"></div>
-                    <span class="text-gray-700 font-medium ${isChecked?'line-through text-gray-400':''}">${task}</span>
-                </div>`;
-            }).join('')}
-            </div>`;
-            tasksContainer.appendChild(section);
-        });
-        updateProgress();
-    }
-
-    window.toggleTask=function(taskId){
-        userData[taskId]=!userData[taskId];
-        localStorage.setItem('ramadan_tracker',JSON.stringify(userData));
-        const checkEl=document.getElementById(`check-${taskId}`);
-        const textEl=checkEl.nextElementSibling;
-        if(userData[taskId]){
-            checkEl.classList.add('checked');
-            textEl.classList.add('line-through','text-gray-400');
-        } else {
-            checkEl.classList.remove('checked');
-            textEl.classList.remove('line-through','text-gray-400');
-        }
-        updateProgress();
-    }
-
-    function updateProgress(){
-        const totalTasks=categories.reduce((acc,cat)=>acc+cat.tasks.length,0);
-        let completedCount=0;
-        categories.forEach((cat,catIdx)=>cat.tasks.forEach((_,taskIdx)=>{
-            const taskId=`day-${currentDay}-cat-${catIdx}-task-${taskIdx}`;
-            if(userData[taskId]) completedCount++;
-        }));
-        const percent=Math.round((completedCount/totalTasks)*100)||0;
-        progressBar.style.width=`${percent}%`;
-        progressPercent.innerText=`${percent}%`;
-    }
-
-    daySelector.addEventListener('change',(e)=>{
-        currentDay=e.target.value;
-        renderTasks();
-    });
-
-    initDays();
-    renderTasks();
-
-    // ==== متابعة أجزاء القرآن ====
-    const quranPartsContainer=document.getElementById('quranPartsContainer');
-    const quranProgressPercent=document.getElementById('quranProgressPercent');
-    let quranData=JSON.parse(localStorage.getItem('quranParts'))||{};
-
+function initDays(){
     for(let i=1;i<=30;i++){
-        const partId=`quran-part-${i}`;
-        const isChecked=quranData[partId]||false;
-        const partDiv=document.createElement('div');
-        partDiv.className=`flex flex-col items-center justify-center p-3 border rounded-lg cursor-pointer transition-all ${isChecked?'bg-[#D4A5A5] text-white':'bg-[#DBCFBB]'}`;
-        partDiv.style.height='80px';
-        partDiv.id=partId;
-        partDiv.innerHTML=`<span class="font-bold">جزء ${i}</span><span class="text-sm">${isChecked?'✅':''}</span>`;
-        partDiv.addEventListener('click',()=>{
-            quranData[partId]=!quranData[partId];
-            localStorage.setItem('quranParts',JSON.stringify(quranData));
-            if(quranData[partId]){
-                partDiv.classList.add('bg-[#D4A5A5]','text-white');
-                partDiv.querySelector('span:last-child').innerText='✅';
-            } else {
-                partDiv.classList.remove('bg-[#D4A5A5]','text-white');
-                partDiv.querySelector('span:last-child').innerText='';
-            }
-            updateQuranProgress();
-        });
-        quranPartsContainer.appendChild(partDiv);
+        const opt=document.createElement('option');
+        opt.value=i; opt.innerText=`اليوم ${i}`;
+        daySelector.appendChild(opt);
     }
+}
 
-    function updateQuranProgress(){
-        const total=30;
-        const completed=Object.values(quranData).filter(v=>v).length;
-        const percent=Math.round((completed/total)*100);
-        quranProgressPercent.innerText=percent+'%';
+function renderTasks(){
+    tasksContainer.innerHTML='';
+    categories.forEach((cat,catIdx)=>{
+        const section=document.createElement('div');
+        section.className='card p-6';
+        section.innerHTML=`<h2 class="text-xl font-bold text-[#3E1F47] mb-4 flex items-center gap-2">
+        <span>${cat.icon}</span> ${cat.title}</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        ${cat.tasks.map((task,taskIdx)=>{
+            const taskId=`day-${currentDay}-cat-${catIdx}-task-${taskIdx}`;
+            const isChecked=userData[taskId]||false;
+            return `<div class="flex items-center gap-3 p-3 rounded-lg hover:bg-[#D4A5A5]/20 transition-colors border border-transparent hover:border-[#C5A059]/40 cursor-pointer" onclick="toggleTask('${taskId}')">
+                <div id="check-${taskId}" class="checkbox-custom ${isChecked?'checked':''}"></div>
+                <span class="text-gray-700 font-medium ${isChecked?'line-through text-gray-400':''}">${task}</span>
+            </div>`;
+        }).join('')}
+        </div>`;
+        tasksContainer.appendChild(section);
+    });
+    updateProgress();
+}
+
+window.toggleTask=function(taskId){
+    userData[taskId]=!userData[taskId];
+    localStorage.setItem('ramadan_tracker',JSON.stringify(userData));
+    const checkEl=document.getElementById(`check-${taskId}`);
+    const textEl=checkEl.nextElementSibling;
+    if(userData[taskId]){
+        checkEl.classList.add('checked');
+        textEl.classList.add('line-through','text-gray-400');
+    } else {
+        checkEl.classList.remove('checked');
+        textEl.classList.remove('line-through','text-gray-400');
     }
+    updateProgress();
+}
 
-    updateQuranProgress();
+function updateProgress(){
+    const totalTasks=categories.reduce((acc,cat)=>acc+cat.tasks.length,0);
+    let completedCount=0;
+    categories.forEach((cat,catIdx)=>cat.tasks.forEach((_,taskIdx)=>{
+        const taskId=`day-${currentDay}-cat-${catIdx}-task-${taskIdx}`;
+        if(userData[taskId]) completedCount++;
+    }));
+    const percent=Math.round((completedCount/totalTasks)*100)||0;
+    progressBar.style.width=`${percent}%`;
+    progressPercent.innerText=`${percent}%`;
+}
+
+daySelector.addEventListener('change',(e)=>{
+    currentDay=e.target.value;
+    renderTasks();
+});
+
+initDays();
+renderTasks();
+
+/* ==== متابعة أجزاء القرآن ==== */
+const quranPartsContainer=document.getElementById('quranPartsContainer');
+const quranProgressPercent=document.getElementById('quranProgressPercent');
+let quranData=JSON.parse(localStorage.getItem('quranParts'))||{};
+
+for(let i=1;i<=30;i++){
+    const partId=`quran-part-${i}`;
+    const isChecked=quranData[partId]||false;
+    const partDiv=document.createElement('div');
+    partDiv.className=`flex flex-col items-center justify-center p-3 border rounded-lg cursor-pointer transition-all ${isChecked?'bg-[#D4A5A5] text-white':'bg-[#DBCFBB]'}`;
+    partDiv.style.height='80px';
+    partDiv.id=partId;
+    partDiv.innerHTML=`<span class="font-bold">جزء ${i}</span><span class="text-sm">${isChecked?'✅':''}</span>`;
+    partDiv.addEventListener('click',()=>{
+        quranData[partId]=!quranData[partId];
+        localStorage.setItem('quranParts',JSON.stringify(quranData));
+        if(quranData[partId]){
+            partDiv.classList.add('bg-[#D4A5A5]','text-white');
+            partDiv.querySelector('span:last-child').innerText='✅';
+        } else {
+            partDiv.classList.remove('bg-[#D4A5A5]','text-white');
+            partDiv.querySelector('span:last-child').innerText='';
+        }
+        updateQuranProgress();
+    });
+    quranPartsContainer.appendChild(partDiv);
+}
+
+function updateQuranProgress(){
+    const total=30;
+    const completed=Object.values(quranData).filter(v=>v).length;
+    const percent=Math.round((completed/total)*100);
+    quranProgressPercent.innerText=percent+'%';
+}
+
+updateQuranProgress();
 </script>
 
 </body>
