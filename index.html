@@ -198,13 +198,11 @@ function renderTasks(){
     updateProgress();
 }
 
-/*window.toggleTask = function(taskId){
+window.toggleTask = function(taskId){
     userData[taskId] = !userData[taskId];
     localStorage.setItem('ramadan_tracker', JSON.stringify(userData));
     renderTasks();
-    syncToGoogleSheet(); 
-   */
-    // مزامنة بعد كل ضغطة
+    syncToGoogleSheet();     // مزامنة بعد كل ضغطة
 }
 
 function updateProgress(){
@@ -257,6 +255,7 @@ updateQuranProgress();
 
 </body>
 </html>
+
 
 
 
