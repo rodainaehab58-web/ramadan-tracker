@@ -5,13 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>متابع العبادات الرمضاني | Royal Palette</title>
 
-    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="Vector Smart Object0.png">
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
 
     <style>
@@ -20,18 +17,13 @@
             background-color: #DBCFBB;
             color: #3E1F47;
         }
-
-        .quran-font {
-            font-family: 'Amiri', serif;
-        }
-
+        .quran-font { font-family: 'Amiri', serif; }
         .card {
             background: #ffffff;
             border-radius: 1rem;
             box-shadow: 0 8px 20px rgba(62, 31, 71, 0.08);
             transition: transform 0.2s;
         }
-
         .checkbox-custom {
             width: 24px;
             height: 24px;
@@ -40,12 +32,10 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-
         .checkbox-custom.checked {
             background-color: #C5A059;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z'/%3E%3C/svg%3E");
         }
-
         .ramadan-theme {
             background: linear-gradient(135deg, #3E1F47 0%, #2B0F33 100%);
         }
@@ -53,23 +43,19 @@
 </head>
 <body class="p-4 md:p-8">
 
-<!-- ====== تسجيل المستخدم ====== -->
 <div id="registerDiv" class="fixed inset-0 flex items-center justify-center bg-black/30 z-50">
     <div class="card p-8 max-w-md w-full bg-white rounded-2xl shadow-xl text-center">
         <h2 class="text-2xl font-bold mb-6 text-[#3E1F47]">سجل بياناتك أولاً</h2>
         <form id="registerForm" class="space-y-4">
             <input type="text" id="userName" placeholder="اسمك" class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#C5A059]" required>
             <input type="email" id="userEmail" placeholder="إيميلك" class="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#C5A059]" required>
-            <button type="submit" class="bg-[#C5A059] text-white px-6 py-3 rounded-lg font-semibold w-full hover:bg-[#b5923d] transition-colors">سجل</button>
+            <button type="submit" class="bg-[#C5A059] text-white px-6 py-3 rounded-lg font-semibold w-full hover:bg-[#b5923d] transition-colors">سجل وابدأ</button>
         </form>
     </div>
 </div>
 
-<!-- ====== المتابعة بعد التسجيل ====== -->
 <div id="trackerDiv" style="display:none;">
-
-  <div class="max-w-4xl mx-auto">
-        <!-- Header -->
+    <div class="max-w-4xl mx-auto">
         <header class="ramadan-theme text-white p-6 rounded-2xl mb-8 shadow-lg text-center relative overflow-hidden">
             <div class="relative z-10">
                 <div class="mb-4">
@@ -80,7 +66,6 @@
             </div>
         </header>
 
-        <!-- Day Selector & Progress -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="card p-6 flex flex-col items-center justify-center">
                 <label class="block text-sm font-medium text-gray-500 mb-2">اختر اليوم</label>
@@ -98,176 +83,175 @@
             </div>
         </div>
 
-        <!-- Main Todo List Sections -->
         <div class="space-y-6" id="tasksContainer"></div>
 
-        <!-- Quran Parts Tracker -->
         <div id="quranPartsDiv" class="space-y-6 mt-6">
             <div class="card p-6">
                 <h2 class="text-xl font-bold mb-4 text-[#3E1F47]">متابعة أجزاء القرآن</h2>
                 <div class="grid grid-cols-3 md:grid-cols-6 gap-4" id="quranPartsContainer"></div>
                 <div class="mt-4 text-right font-bold text-[#3E1F47]">
-                    التقدم: <span id="quranProgressPercent">0%</span>
+                    التقدم الكلي في الختمة: <span id="quranProgressPercent">0%</span>
                 </div>
             </div>
         </div>
 
-        <!-- Footer Quote -->
-        <footer class="mt-12 text-center text-gray-500 italic">
+        <footer class="mt-12 text-center text-gray-500 italic pb-10">
             <p id="dailyQuote">رمضان فرصة للتغيير، ابدأ يومك بنية خالصة لله.</p>
         </footer>
-
     </div>
-
 </div>
 
 <script>
-/* ==== تسجيل المستخدم وارسال البيانات لجوجل فورم ==== */
-const registerDiv = document.getElementById('registerDiv');
-const trackerDiv = document.getElementById('trackerDiv');
+/* =========================================
+   تنبيه: ضعي رابط الـ Web App الخاص بكِ هنا
+   ========================================= */
+const GOOGLE_SCRIPT_URL = "رابط_السكربت_الخاص_بك_هنا";
 
-if(localStorage.getItem('ramadan_user')){
-    registerDiv.style.display='none';
-    trackerDiv.style.display='block';
-}
-
-document.getElementById('registerForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    const userName = document.getElementById('userName').value;
-    const userEmail = document.getElementById('userEmail').value;
-
-    localStorage.setItem('ramadan_user', JSON.stringify({name:userName,email:userEmail}));
-
-    const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSdPcGOSj8kv1MREEXHyyd_292rtZaYGi1J0OBC63gsN5C9DcQ/formResponse";
-    const formData = new FormData();
-    formData.append('entry.536000406', userName); // الاسم
-    formData.append('entry.650006323', userEmail); // الإيميل
-
-    fetch(formURL, {method:'POST',mode:'no-cors',body:formData})
-    .then(() => {
-        registerDiv.style.display='none';
-        trackerDiv.style.display='block';
-    });
-});
-
-/* ==== إعداد الأيام والمهام اليومية ==== */
-const categories=[
-    {title:"الصلوات المفروضة",icon:"🕌",tasks:["الفجر","الظهر","العصر","المغرب","العشاء"]},
-    {title:"السنن الرواتب",icon:"✨",tasks:["سنة الفجر (2 قبل)","سنة الظهر (4 قبل و 2 بعد)","سنة المغرب (2 بعد)","سنة العشاء (2 بعد)"]},
-    {title:"الأذكار والورد",icon:"📖",tasks:["أذكار الصباح","أذكار المساء","الورد القرآني اليومي","الاستغفار (100 مرة)","الصلاة على النبي (100 مرة)"]},
-    {title:"قيام الليل",icon:"🌙",tasks:["صلاة التراويح","صلاة الوتر"]}
+const categories = [
+    {title:"الصلوات المفروضة", icon:"🕌", tasks:["الفجر","الظهر","العصر","المغرب","العشاء"]},
+    {title:"السنن الرواتب", icon:"✨", tasks:["سنة الفجر","سنة الظهر","سنة المغرب","سنة العشاء"]},
+    {title:"الأذكار والورد", icon:"📖", tasks:["أذكار الصباح","أذكار المساء","الورد القرآني","الاستغفار","الصلاة على النبي"]},
+    {title:"قيام الليل", icon:"🌙", tasks:["صلاة التراويح","صلاة الوتر"]}
 ];
 
-let currentDay=1;
-let userData=JSON.parse(localStorage.getItem('ramadan_tracker'))||{};
-const daySelector=document.getElementById('daySelector');
-const tasksContainer=document.getElementById('tasksContainer');
-const progressBar=document.getElementById('progressBar');
-const progressPercent=document.getElementById('progressPercent');
+let currentDay = 1;
+let userData = JSON.parse(localStorage.getItem('ramadan_tracker')) || {};
+let quranData = JSON.parse(localStorage.getItem('quranParts')) || {};
+
+// دالة إرسال البيانات لجوجل شيت
+async function syncToGoogleSheet() {
+    const user = JSON.parse(localStorage.getItem('ramadan_user'));
+    if (!user || GOOGLE_SCRIPT_URL.includes("رابط_السكربت")) return;
+
+    // حساب النسبة المئوية الحالية لإرسالها
+    const totalTasks = categories.reduce((acc, cat) => acc + cat.tasks.length, 0);
+    let completedCount = 0;
+    categories.forEach((cat, catIdx) => cat.tasks.forEach((_, taskIdx) => {
+        if (userData[`day-${currentDay}-cat-${catIdx}-task-${taskIdx}`]) completedCount++;
+    }));
+    const progress = Math.round((completedCount / totalTasks) * 100) || 0;
+
+    const payload = {
+        name: user.name,
+        email: user.email,
+        day: currentDay,
+        progress: progress,
+        quran_total: Object.values(quranData).filter(v => v).length
+    };
+
+    try {
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+    } catch (e) { console.error("Sync error:", e); }
+}
+
+// تسجيل المستخدم
+document.getElementById('registerForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('userName').value;
+    const email = document.getElementById('userEmail').value;
+    localStorage.setItem('ramadan_user', JSON.stringify({name, email}));
+    
+    document.getElementById('registerDiv').style.display = 'none';
+    document.getElementById('trackerDiv').style.display = 'block';
+    syncToGoogleSheet();
+});
+
+// التحقق من التسجيل المسبق
+if(localStorage.getItem('ramadan_user')){
+    document.getElementById('registerDiv').style.display = 'none';
+    document.getElementById('trackerDiv').style.display = 'block';
+}
 
 function initDays(){
-    for(let i=1;i<=30;i++){
-        const opt=document.createElement('option');
-        opt.value=i; opt.innerText=`اليوم ${i}`;
-        daySelector.appendChild(opt);
+    const ds = document.getElementById('daySelector');
+    for(let i=1; i<=30; i++){
+        const opt = document.createElement('option');
+        opt.value = i; opt.innerText = `اليوم ${i}`;
+        ds.appendChild(opt);
     }
 }
 
 function renderTasks(){
-    tasksContainer.innerHTML='';
-    categories.forEach((cat,catIdx)=>{
-        const section=document.createElement('div');
-        section.className='card p-6';
-        section.innerHTML=`<h2 class="text-xl font-bold text-[#3E1F47] mb-4 flex items-center gap-2">
-        <span>${cat.icon}</span> ${cat.title}</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        ${cat.tasks.map((task,taskIdx)=>{
-            const taskId=`day-${currentDay}-cat-${catIdx}-task-${taskIdx}`;
-            const isChecked=userData[taskId]||false;
-            return `<div class="flex items-center gap-3 p-3 rounded-lg hover:bg-[#D4A5A5]/20 transition-colors border border-transparent hover:border-[#C5A059]/40 cursor-pointer" onclick="toggleTask('${taskId}')">
-                <div id="check-${taskId}" class="checkbox-custom ${isChecked?'checked':''}"></div>
-                <span class="text-gray-700 font-medium ${isChecked?'line-through text-gray-400':''}">${task}</span>
-            </div>`;
-        }).join('')}
-        </div>`;
-        tasksContainer.appendChild(section);
+    const container = document.getElementById('tasksContainer');
+    container.innerHTML = '';
+    categories.forEach((cat, catIdx) => {
+        const section = document.createElement('div');
+        section.className = 'card p-6';
+        let tasksHtml = cat.tasks.map((task, taskIdx) => {
+            const taskId = `day-${currentDay}-cat-${catIdx}-task-${taskIdx}`;
+            const isChecked = userData[taskId] || false;
+            return `
+                <div class="flex items-center gap-3 p-3 rounded-lg hover:bg-[#D4A5A5]/20 transition-colors border border-transparent hover:border-[#C5A059]/40 cursor-pointer" onclick="toggleTask('${taskId}')">
+                    <div id="check-${taskId}" class="checkbox-custom ${isChecked?'checked':''}"></div>
+                    <span class="text-gray-700 font-medium ${isChecked?'line-through text-gray-400':''}">${task}</span>
+                </div>`;
+        }).join('');
+        
+        section.innerHTML = `<h2 class="text-xl font-bold text-[#3E1F47] mb-4 flex items-center gap-2"><span>${cat.icon}</span> ${cat.title}</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-4">${tasksHtml}</div>`;
+        container.appendChild(section);
     });
     updateProgress();
 }
 
-window.toggleTask=function(taskId){
-    userData[taskId]=!userData[taskId];
-    localStorage.setItem('ramadan_tracker',JSON.stringify(userData));
-    const checkEl=document.getElementById(`check-${taskId}`);
-    const textEl=checkEl.nextElementSibling;
-    if(userData[taskId]){
-        checkEl.classList.add('checked');
-        textEl.classList.add('line-through','text-gray-400');
-    } else {
-        checkEl.classList.remove('checked');
-        textEl.classList.remove('line-through','text-gray-400');
-    }
-    updateProgress();
+window.toggleTask = function(taskId){
+    userData[taskId] = !userData[taskId];
+    localStorage.setItem('ramadan_tracker', JSON.stringify(userData));
+    renderTasks();
+    syncToGoogleSheet(); // مزامنة بعد كل ضغطة
 }
 
 function updateProgress(){
-    const totalTasks=categories.reduce((acc,cat)=>acc+cat.tasks.length,0);
-    let completedCount=0;
-    categories.forEach((cat,catIdx)=>cat.tasks.forEach((_,taskIdx)=>{
-        const taskId=`day-${currentDay}-cat-${catIdx}-task-${taskIdx}`;
-        if(userData[taskId]) completedCount++;
+    const totalTasks = categories.reduce((acc, cat) => acc + cat.tasks.length, 0);
+    let completedCount = 0;
+    categories.forEach((cat, catIdx) => cat.tasks.forEach((_, taskIdx) => {
+        if (userData[`day-${currentDay}-cat-${catIdx}-task-${taskIdx}`]) completedCount++;
     }));
-    const percent=Math.round((completedCount/totalTasks)*100)||0;
-    progressBar.style.width=`${percent}%`;
-    progressPercent.innerText=`${percent}%`;
+    const percent = Math.round((completedCount/totalTasks)*100) || 0;
+    document.getElementById('progressBar').style.width = `${percent}%`;
+    document.getElementById('progressPercent').innerText = `${percent}%`;
 }
 
-daySelector.addEventListener('change',(e)=>{
-    currentDay=e.target.value;
+document.getElementById('daySelector').addEventListener('change', (e) => {
+    currentDay = e.target.value;
     renderTasks();
 });
 
-initDays();
-renderTasks();
-
-/* ==== متابعة أجزاء القرآن ==== */
-const quranPartsContainer=document.getElementById('quranPartsContainer');
-const quranProgressPercent=document.getElementById('quranProgressPercent');
-let quranData=JSON.parse(localStorage.getItem('quranParts'))||{};
-
-for(let i=1;i<=30;i++){
-    const partId=`quran-part-${i}`;
-    const isChecked=quranData[partId]||false;
-    const partDiv=document.createElement('div');
-    partDiv.className=`flex flex-col items-center justify-center p-3 border rounded-lg cursor-pointer transition-all ${isChecked?'bg-[#D4A5A5] text-white':'bg-[#DBCFBB]'}`;
-    partDiv.style.height='80px';
-    partDiv.id=partId;
-    partDiv.innerHTML=`<span class="font-bold">جزء ${i}</span><span class="text-sm">${isChecked?'✅':''}</span>`;
-    partDiv.addEventListener('click',()=>{
-        quranData[partId]=!quranData[partId];
-        localStorage.setItem('quranParts',JSON.stringify(quranData));
-        if(quranData[partId]){
-            partDiv.classList.add('bg-[#D4A5A5]','text-white');
-            partDiv.querySelector('span:last-child').innerText='✅';
-        } else {
-            partDiv.classList.remove('bg-[#D4A5A5]','text-white');
-            partDiv.querySelector('span:last-child').innerText='';
-        }
-        updateQuranProgress();
-    });
-    quranPartsContainer.appendChild(partDiv);
+// أجزاء القرآن
+function initQuran(){
+    const container = document.getElementById('quranPartsContainer');
+    container.innerHTML = '';
+    for(let i=1; i<=30; i++){
+        const partId = `quran-part-${i}`;
+        const isChecked = quranData[partId] || false;
+        const div = document.createElement('div');
+        div.className = `flex flex-col items-center justify-center p-3 border rounded-lg cursor-pointer transition-all ${isChecked?'bg-[#C5A059] text-white':'bg-[#DBCFBB]'}`;
+        div.innerHTML = `<span class="font-bold text-sm">جزء ${i}</span><span>${isChecked?'✅':''}</span>`;
+        div.onclick = () => {
+            quranData[partId] = !quranData[partId];
+            localStorage.setItem('quranParts', JSON.stringify(quranData));
+            initQuran();
+            updateQuranProgress();
+            syncToGoogleSheet();
+        };
+        container.appendChild(div);
+    }
 }
 
 function updateQuranProgress(){
-    const total=30;
-    const completed=Object.values(quranData).filter(v=>v).length;
-    const percent=Math.round((completed/total)*100);
-    quranProgressPercent.innerText=percent+'%';
+    const completed = Object.values(quranData).filter(v => v).length;
+    document.getElementById('quranProgressPercent').innerText = Math.round((completed/30)*100) + '%';
 }
 
+initDays();
+renderTasks();
+initQuran();
 updateQuranProgress();
 </script>
 
 </body>
 </html>
-
