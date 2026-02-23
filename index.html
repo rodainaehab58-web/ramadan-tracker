@@ -252,6 +252,7 @@ function updateProgress(){
 document.getElementById('daySelector').addEventListener('change', (e) => {
     currentDay = e.target.value;
     renderTasks();
+     showDailyDua(); // 👈 هنا الإضافة
 });
 
 // أجزاء القرآن
@@ -376,25 +377,23 @@ function showDailyDua() {
 
   if (lastShown === today) return;
 
-  const randomDua = duas[Math.floor(Math.random() * duas.length)];
-  document.getElementById("duaText").innerText = randomDua;
+  const day = currentDay || 1;
+  const dua = duas[day - 1] || duas[0];
 
+  document.getElementById("duaText").innerText = dua;
   document.getElementById("dailyDua").style.display = "flex";
 
   localStorage.setItem("duaDate", today);
 }
 
-function closeDua() {
-  document.getElementById("dailyDua").style.display = "none";
-}
-
 // تشغيل عند فتح الصفحة
-showDailyDua();
+function showDailyDua();
 
 </script>
 
 </body>
 </html>
+
 
 
 
